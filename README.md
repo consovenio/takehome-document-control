@@ -93,3 +93,17 @@ dotnet build
 ```
 
 Requires the .NET 8 SDK.
+
+## How to submit
+
+1. Click **"Use this template" → "Create a new repository"** to make your own copy. (This keeps
+   your work separate — please don't fork or open a pull request against this repository.)
+2. Implement the task in your copy, committing as you go.
+3. Put your **design notes** in the repository's `README` / a short `NOTES.md`, or in the message
+   you send back.
+4. Send it back:
+   - if your repository is **public**, reply with the link; or
+   - if it's **private**, invite the reviewer (the GitHub username you were given) as a
+     collaborator, or send a `.zip`.
+
+No deadline pressure inside the task itself — spend the time-box, and tell us what you'd do with more.
