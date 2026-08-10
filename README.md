@@ -3,8 +3,6 @@
 A small, self-contained .NET task. Time-box **~4–6 hours**. No external services, database or
 credentials are needed — everything runs locally.
 
-*(Zadání je níže i v češtině.)*
-
 ---
 
 ## In one sentence
@@ -56,8 +54,8 @@ published version supersedes the old, nothing is ever hard-deleted — and write
 - The state-machine + audit logic as a **testable core** — `now` and `actor` are passed in, not
   read globally, so the audit records who/when deterministically.
 - **Unit tests** covering the rules above and their edge cases.
-- Fill in the **"Candidate notes"** section at the bottom (English): key design decisions, the
-  reading-tasks rule and why, trade-offs, and what you'd do with more time.
+- **Design notes (English)** — key design decisions, your reading-tasks rule and why, trade-offs,
+  and what you'd do with more time. Put them in your pull-request description or a short `NOTES.md`.
 - Optional: a tiny CLI or minimal API to demo. Not required; tests are read first.
 
 ## What we look for
@@ -68,49 +66,6 @@ published version supersedes the old, nothing is ever hard-deleted — and write
 - Two-step destructive action + soft-delete discipline.
 - Clean, readable C#; EF Core used sensibly; reasoning in your notes. We care as much about *why*
   as *what*.
-
----
-
-## Zadání (CZ)
-
-### Jednou větou
-Napíšeš malou C# knihovnu, která spravuje **řízené dokumenty** (jako SOPy/směrnice) v jejich
-životním cyklu a drží **úplnou, nezfalšovatelnou historii každé změny**. Žádné UI, žádné reálné
-API — jen logika a testy, které dokážou, že se chová správně.
-
-### Příklad — co tvoje knihovna dělá
-Dokument (`SOP-001`) prochází stavy a **každá změna se zapíše do auditu**:
-
-| Krok | Akce | Výsledný stav | Audit poté |
-|---|---|---|---|
-| 1 | Alice založí `SOP-001` v1 | **Draft** | `Created by alice` |
-| 2 | Alice pošle k revizi | **InReview** | `… + Draft→InReview` |
-| 3 | Bob schválí | **Approved** | `… + InReview→Approved` |
-| 4 | Bob publikuje | **Published** | `… + Approved→Published` |
-| 5 | Někdo zkusí publikovat `SOP-002` rovnou z Draftu | **odmítnuto** | *(nelegální přechod — beze změny)* |
-| 6 | `SOP-001` v2 dojde do Published | v2 **Published**, v1 → **Superseded** | *(obojí v auditu; jen JEDNA Published)* |
-| 7 | Alice „smaže" v1 | v1 **Archived** *(ne smazání řádku)* | `… + Archived` — a chtělo to **dvoustupňové potvrzení** |
-| 8 | Dotaz na historii `SOP-001` | — | **celý seřazený seznam**, nic nechybí |
-
-**Úkol:** naimplementovat register tak, aby se tohle chovalo přesně takhle — nelegální přechody
-odmítnout, nic nezměnit bez auditu, nová verze superseduje starou, nic se nemaže natvrdo — a napsat
-testy, které to dokážou.
-
-### Pravidla
-1. **Jen legální přechody** (`Draft→InReview→Approved→Published`, `Published→Superseded`,
-   `→Archived`). Cokoliv jiného **odmítnout**.
-2. **Neměnný, úplný audit** — každý přechod i editace metadat → záznam (kdo/kdy/z→do/důvod).
-   Audit se nikdy neupravuje ani nemaže; **žádná cesta změnit dokument bez auditu**.
-3. **Jen jedna Published** na číslo — nová verze superseduje starou.
-4. **Jen soft-delete** — „smazání" = `Archived` s auditem. Žádný hard delete.
-5. **Dvoustupňové potvrzení** u archivace (token / druhé volání — tvůj návrh).
-6. **Úsudková otázka:** co s nevyřízenými reading tasky při supersede (přenést/uzavřít/
-   znovuotevřít)? Vyber, naimplementuj, **zdůvodni** v poznámkách.
-
-### Co odevzdat
-- Tuto solution s **EF Core / SQLite**, logiku jako **testovatelné jádro** (`now`/`actor` se
-  předávají). **Unit testy** pravidel a hran. Vyplň **„Candidate notes"** dole (anglicky).
-- `dotnet test` musí projít z čistého klonu.
 
 ---
 
@@ -133,11 +88,3 @@ dotnet build
 ```
 
 Requires the .NET 8 SDK.
-
----
-
-## Candidate notes (fill this in)
-
-> Key design decisions, your reading-tasks rule and why, trade-offs, and what you'd do with more time.
-
-_(your notes here)_
