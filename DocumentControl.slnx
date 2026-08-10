@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DocumentControl.Core/DocumentControl.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DocumentControl.Tests/DocumentControl.Tests.csproj" />
+  </Folder>
+</Solution>
