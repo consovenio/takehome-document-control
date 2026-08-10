@@ -3,6 +3,11 @@
 A small, self-contained .NET task. Time-box **~4–6 hours**. No external services, database or
 credentials are needed — everything runs locally.
 
+**Scope over completeness.** You are *not* expected to finish everything, and you shouldn't polish
+beyond the time-box. We would much rather see a small, correct, well-tested core than a broad but
+shaky one. Get the state machine and the audit trail right and tested first; if you run out of time,
+just **write down what you'd do next and why** in your notes — that reasoning counts as much as code.
+
 ---
 
 ## In one sentence
