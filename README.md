@@ -1,22 +1,22 @@
-# Take-home — Document Control Register
+# Take-home - Document Control Register
 
-A small, self-contained .NET task. Time-box **~4–6 hours**. No external services, database or
-credentials are needed — everything runs locally.
+A small, self-contained .NET task. Time-box **~4-6 hours**. No external services, database or
+credentials are needed - everything runs locally.
 
 **Scope over completeness.** You are *not* expected to finish everything, and you shouldn't polish
 beyond the time-box. We would much rather see a small, correct, well-tested core than a broad but
 shaky one. Get the state machine and the audit trail right and tested first; if you run out of time,
-just **write down what you'd do next and why** in your notes — that reasoning counts as much as code.
+just **write down what you'd do next and why** in your notes - that reasoning counts as much as code.
 
 ---
 
 ## In one sentence
 
 You build a small C# library that manages **controlled documents** (like SOPs or policies) through
-their lifecycle — and keeps a complete, tamper-proof **history of every change**. No UI, no real
+their lifecycle - and keeps a complete, tamper-proof **history of every change**. No UI, no real
 API: just the logic and tests that prove it behaves.
 
-## Worked example — what your library does
+## Worked example - what your library does
 
 A document (say `SOP-001`) moves through states, and **every change is recorded in an audit trail**:
 
@@ -26,14 +26,14 @@ A document (say `SOP-001`) moves through states, and **every change is recorded 
 | 2 | Alice submits it for review | **InReview** | `… + Draft→InReview by alice` |
 | 3 | Bob approves it | **Approved** | `… + InReview→Approved by bob` |
 | 4 | Bob publishes it | **Published** | `… + Approved→Published by bob` |
-| 5 | Someone tries to publish `SOP-002` straight from Draft | **rejected** | *(illegal transition — no change, no audit)* |
+| 5 | Someone tries to publish `SOP-002` straight from Draft | **rejected** | *(illegal transition - no change, no audit)* |
 | 6 | `SOP-001` v2 is created and taken to Published | v2 **Published**, v1 → **Superseded** | *(both audited; only ONE Published at a time)* |
-| 7 | Alice "deletes" `SOP-001` v1 | v1 **Archived** *(not a row deletion)* | `… + Archived by alice` — and it took a **two-step confirm** |
-| 8 | Ask for `SOP-001`'s history | — | the **full ordered list**, nothing missing |
+| 7 | Alice "deletes" `SOP-001` v1 | v1 **Archived** *(not a row deletion)* | `… + Archived by alice` - and it took a **two-step confirm** |
+| 8 | Ask for `SOP-001`'s history | - | the **full ordered list**, nothing missing |
 
-**Your job:** implement the register so these operations behave exactly like this — illegal
+**Your job:** implement the register so these operations behave exactly like this - illegal
 transitions are rejected, nothing changes a document without leaving an audit entry, a new
-published version supersedes the old, nothing is ever hard-deleted — and write tests that prove it.
+published version supersedes the old, nothing is ever hard-deleted - and write tests that prove it.
 
 ## The rules (precise version)
 
@@ -47,26 +47,26 @@ published version supersedes the old, nothing is ever hard-deleted — and write
    published one (old → `Superseded`). At most one `Published` version per number at any time.
 4. **Soft-delete only.** "Delete" = `Archived` with an audit entry. No hard delete, ever.
 5. **Two-step confirmation for the irreversible step** (archive): it must take an explicit confirm
-   (a token, a second call — your design), not a single fire-and-forget call.
+   (a token, a second call - your design), not a single fire-and-forget call.
 6. **A judgment call to make and justify:** when a document is superseded, what should happen to
-   any *pending reading tasks* on the old version — carry them to the new version, close them, or
+   any *pending reading tasks* on the old version - carry them to the new version, close them, or
    reopen them? Pick one, implement it (even a simple model), and **explain why** in your notes.
    There is no single right answer; we want the reasoning.
 
 ## Deliverables
 
 - This solution, with **EF Core against SQLite** for persistence (runs anywhere).
-- The state-machine + audit logic as a **testable core** — `now` and `actor` are passed in, not
+- The state-machine + audit logic as a **testable core** - `now` and `actor` are passed in, not
   read globally, so the audit records who/when deterministically.
 - **Unit tests** covering the rules above and their edge cases.
-- **Design notes (English)** — key design decisions, your reading-tasks rule and why, trade-offs,
+- **Design notes (English)** - key design decisions, your reading-tasks rule and why, trade-offs,
   and what you'd do with more time. Put them in your pull-request description or a short `NOTES.md`.
 - Optional: a tiny CLI or minimal API to demo. Not required; tests are read first.
 
 ## What we look for
 
 - A state machine that rejects illegal transitions.
-- An audit trail that is genuinely append-only and **complete** — nothing slips through unaudited.
+- An audit trail that is genuinely append-only and **complete** - nothing slips through unaudited.
 - The supersede invariant (one Published) and the reading-tasks judgment.
 - Two-step destructive action + soft-delete discipline.
 - Clean, readable C#; EF Core used sensibly; reasoning in your notes. We care as much about *why*
@@ -78,11 +78,11 @@ published version supersedes the old, nothing is ever hard-deleted — and write
 
 ```
 DocumentControl.sln
-  src/DocumentControl.Core     domain types + IDocumentRegister — implement this
+  src/DocumentControl.Core     domain types + IDocumentRegister - implement this
   tests/DocumentControl.Tests  xUnit; green smoke tests + a checklist of cases to add
 ```
 
-The types in `DocumentControl.Core` are a **starting shape**, not a spec — adjust them (including
+The types in `DocumentControl.Core` are a **starting shape**, not a spec - adjust them (including
 `IDocumentRegister`, e.g. to model the two-step archive) as your design needs.
 
 ## Running
@@ -97,7 +97,7 @@ Requires the .NET 8 SDK.
 ## How to submit
 
 1. Click **"Use this template" → "Create a new repository"** to make your own copy. (This keeps
-   your work separate — please don't fork or open a pull request against this repository.)
+   your work separate - please don't fork or open a pull request against this repository.)
 2. Implement the task in your copy, committing as you go.
 3. Put your **design notes** in the repository's `README` / a short `NOTES.md`, or in the message
    you send back.
@@ -106,4 +106,4 @@ Requires the .NET 8 SDK.
    - if it's **private**, invite the reviewer (the GitHub username you were given) as a
      collaborator, or send a `.zip`.
 
-No deadline pressure inside the task itself — spend the time-box, and tell us what you'd do with more.
+No deadline pressure inside the task itself - spend the time-box, and tell us what you'd do with more.
